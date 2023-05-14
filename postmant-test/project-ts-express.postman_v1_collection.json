@@ -1,0 +1,1152 @@
+{
+	"info": {
+		"_postman_id": "66f63284-c8ff-4ff6-b418-c4d98a7dd116",
+		"name": "project-ts-express",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "19373598"
+	},
+	"item": [
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "Register not valid payload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"aijp dk\",\r\n    \"password\": \"^&*&*\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Register user Tami",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userTami}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Register user Encih",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userEncih}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Login not valid payload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"xxxxx\",\r\n    \"password\": \"fff\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Login not valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"xxxxx\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userTami}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userTami}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PROFILE",
+			"item": [
+				{
+					"name": "Login User Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenEncih', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userEncih}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Login Admin Tami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userTami}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile Not Auth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile Not valid Auth",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "kdfiudjelkrjelrjlerlkejreerfgkjfgfgekrjer"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile valid user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile valid admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user By Id No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user By Id No found",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/100"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user By Id No Owner",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user By Id Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userEncih}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Invalid Payload",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile Encih",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"encihganteng\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userEncih}}\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ADMIN",
+			"item": [
+				{
+					"name": "Login user Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenEncih', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userEncih}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Login admin Tami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userTami}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Get users No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Get users No Valid token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "ffgffgfgf"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Get users No Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Get users Valid Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User No Auth",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Not Found",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/100"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User No Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User By Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Activated No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/batutuu/active"
+					},
+					"response": []
+				},
+				{
+					"name": "Activated No Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/batutuu/active"
+					},
+					"response": []
+				},
+				{
+					"name": "Activated Not Found user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/xxx/active"
+					},
+					"response": []
+				},
+				{
+					"name": "Activated User By Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/users/{{userEncih}}/active"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "THREAD",
+			"item": [
+				{
+					"name": "Login Admin Tami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userTami}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenEncih', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userEncih}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Thread No Auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Thread No Valid Payload",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"  \",\r\n    \"body\": \"ffff\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Thread User Tami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('slug', responseJson.addedThread.slug);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"kocak\",\r\n    \"body\": \"kocak\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Thread User Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('slug', responseJson.addedThread.slug);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"ramon\",\r\n    \"body\": \"tamon\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Threads No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Threads",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Thread By Slug",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/{{slug}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Thread Not valid payload",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"\",\r\n    \"body\": \"update thread\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Thread No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"update thread\",\r\n    \"body\": \"update thread\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Thread Not Found",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"update thread\",\r\n    \"body\": \"update thread\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads/2000"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Not Owner",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"update thread\",\r\n    \"body\": \"update thread\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Update valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"update \",\r\n    \"body\": \"update \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Thread No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/5"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Thread No Found",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/500"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Thread Not Owner",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Thread valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/2"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
