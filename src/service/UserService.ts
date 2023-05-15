@@ -4,6 +4,7 @@ import AuthenticationService from "./AuthenticationService";
 import AddedUser from "../entities/AddedUser";
 import ThreadRepository from "../repository/ThreadRepository";
 import GettedUser from "../entities/GetttedUser";
+import CommentRepository from "../repository/CommentRepository";
 
 
 class UserService {
@@ -62,7 +63,7 @@ class UserService {
 
         const hashedPassword = password ? await AuthenticationService.passwordHash(password) : undefined;
         await UserRepository.updateUserById(user.id, username, hashedPassword);
-        return { statusCode: 201, status: 'success', message: `profilev ${user.username} berhasil diupdate`};
+        return { statusCode: 201, status: 'success', message: `profile ${user.username} berhasil diupdate`};
     }
 
     async deleteUserById(): Promise<any> {
@@ -73,8 +74,13 @@ class UserService {
             return { statusCode: 404, status: 'fail', message: 'user tidak ditemukan' };
         }
 
+        if (user.is_admin) {
+            return { statusCode: 404, status: 'fail', message: 'user tidak ditemukan' };
+        }
+    
         await UserRepository.deleteUser(user.id);
         await ThreadRepository.deleteThreadByUserId(user.id);
+        await CommentRepository.deleteCommentByUserId(user.id);
         return { statusCode: 201, status: 'success', message: `user ${user.username}, berhasil dinonaktifkan`};
     }
 
@@ -92,6 +98,7 @@ class UserService {
 
         await UserRepository.reactivateUser(user.username);
         await ThreadRepository.reactivateThread(user.id, user.deletedAt);
+        await CommentRepository.reactivateComment(user.id, user.deletedAt);
         
         
         return { statusCode: 201, status: 'success', message: 'user berhasil diaktifkan'};

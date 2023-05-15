@@ -12,9 +12,9 @@ export const auth = async (req: Request, res: Response, next: NextFunction): Pro
     }
     
     const credential = AuthenticationService.decodeToken(token);
-    const account = await UserRepository.verifyAdmin(true);
+    const account = await UserRepository.getUserById(credential.user.id);
 
-    if (account.id === credential.user.id) {
+    if (account.is_admin) {
       const adminCredential = {
         ...credential,
         is_admin: true,

@@ -3,32 +3,28 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class thread extends Model {
+  class comment extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      thread.belongsTo(models.user, { 
-        onDelete: 'CASCADE',
-      });
-      thread.hasMany(models.comment, {
-        onDelete: 'CASCADE',
-      })
+      // define association here
+      comment.belongsTo(models.user);
+      comment.belongsTo(models.thread)
     }
   }
-  thread.init({
+  comment.init({
     user_id: DataTypes.INTEGER,
-    slug: DataTypes.STRING,
-    title: DataTypes.STRING,
-    body: DataTypes.TEXT,
+    thread_id: DataTypes.INTEGER,
+    comentar: DataTypes.TEXT,
     deleted_at: DataTypes.DATE,
   }, {
     sequelize,
-    modelName: 'thread',
+    modelName: 'comment',
     underscored: true,
     paranoid: true,
   });
-  return thread;
+  return comment;
 };

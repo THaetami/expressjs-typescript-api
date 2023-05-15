@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 import AddedThread from "../entities/AddedThread";
 import { Request, Response } from "express";
 import ThreadRepository from "../repository/ThreadRepository";
+import GettedThread from "../entities/GettedThread";
 
 class ThreadService {
     credential: {
@@ -32,13 +33,20 @@ class ThreadService {
         return { statusCode: 201, status: 'success', addedThread: new AddedThread(result)};
     }
 
-    async getThreadBySlug(): Promise<any> {
-        const { slug } = this.params;
-        const thread = await ThreadRepository.getThreadBySlug(slug);
+    async getThreadById(): Promise<any> {
+        const { id: threadId } = this.params;
+        const id = this.credential.id;
+        const thread = await ThreadRepository.getThreadById(Number(threadId));
+
         if (!thread) {
             return { statusCode: 404, status: 'fail', message: 'thread tidak ditemukan' };
         }
-        return { statusCode: 200, status: 'success', thread: thread};
+
+        if (thread.user_id !== id) {
+            return { statusCode: 403, status: 'fail', message: 'anda tidak berhak mengakses resource ini' };
+        }
+
+        return { statusCode: 200, status: 'success', thread: new GettedThread(thread)};
     }
 
     async updateThreadById(): Promise<any> {
@@ -74,6 +82,16 @@ class ThreadService {
 
         await ThreadRepository.deleteThread(thread.id)
         return { statusCode: 201, status: 'success', message: `thread yang berjudul ${thread.title}, berhasil dihapus`};
+    }
+
+    
+    async getThreadBySlug(): Promise<any> {
+        const { slug } = this.params;
+        const thread = await ThreadRepository.getThreadBySlug(slug);
+        if (!thread) {
+            return { statusCode: 404, status: 'fail', message: 'thread tidak ditemukan' };
+        }
+        return { statusCode: 200, status: 'success', thread: thread};
     }
 }
 

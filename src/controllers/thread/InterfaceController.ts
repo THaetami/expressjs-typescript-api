@@ -6,6 +6,7 @@ interface IController {
     show(req: Request, res: Response): Promise<Response>;
     update(req: Request, res: Response): Promise<Response>;
     delete(req: Request, res: Response): Promise<Response>;
+    detail(req: Request, res: Response): Promise<Response>;
 }
 
 export default IController;

@@ -12,8 +12,8 @@ export const admin = async (req: Request, res: Response, next: NextFunction): Pr
     }
     
     const credential = AuthenticationService.decodeToken(token);
-    const account = await UserRepository.verifyAdmin(true);
-    if (account.id !== credential.user.id) {
+    const account = await UserRepository.getUserById(credential.user.id);
+    if (!account.is_admin) {
         return res.status(403).json({
             "status": "fail",
             "message": "anda tidak berhak mengakses resource ini"

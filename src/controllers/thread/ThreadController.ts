@@ -17,7 +17,7 @@ class ThreadController implements IController {
 
     show = async (req: Request, res: Response): Promise<Response> => {
         const service: ThreadService = new ThreadService(req, res);
-        const thread = await service.getThreadBySlug();
+        const thread = await service.getThreadById();
         return res.status(thread.statusCode).json(thread);
     }
 
@@ -30,6 +30,12 @@ class ThreadController implements IController {
     delete = async (req: Request, res: Response): Promise<Response> => {
         const service: ThreadService = new ThreadService(req, res);
         const thread = await service.deleteThreadById();
+        return res.status(thread.statusCode).json(thread);
+    }
+
+    detail = async (req: Request, res: Response): Promise<Response> => {
+        const service: ThreadService = new ThreadService(req, res);
+        const thread = await service.getThreadBySlug();
         return res.status(thread.statusCode).json(thread);
     }
 }

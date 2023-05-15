@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         foreignKey: 'user_id'
       });
+      user.hasMany(models.comment, {
+        onDelete: 'CASCADE',
+        foreignKey: 'user_id'
+      })
     }
   }
   user.init({
@@ -27,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: DataTypes.STRING,
     deleted_at: DataTypes.DATE,
+    is_admin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
   }, {
     sequelize,
     modelName: 'user',

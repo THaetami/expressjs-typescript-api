@@ -1,3 +1,4 @@
+import { Sequelize } from "../db/models";
 const db = require('../db/models');
 
 class ThreadRepository {
@@ -5,17 +6,33 @@ class ThreadRepository {
     static async getThreads() {
         try {
             const threads = await db.thread.findAll({
-                include: [{
-                    model: db.user,
-                    attributes: ['id', 'username']
-                }],
-                attributes: ['id', 'title', 'body', 'slug', 'updated_at']
+                include: [
+                    {
+                        model: db.user,
+                        attributes: ['id', 'username']
+                    },
+                    {
+                        model: db.comment,
+                        attributes: []
+                    }
+                ],
+                attributes: [
+                    'id',
+                    'title',
+                    'body',
+                    'slug',
+                    'updated_at',
+                    [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'comment_count']
+                ],
+                subQuery: false,
+                group: ['thread.id', 'user.id']
             });
             return threads;
         } catch (err) {
             console.error(err);
         }
     }
+    
     
     static async addThread(user_id: number, slug: string, title: string, body: string) {
         try {
@@ -29,10 +46,20 @@ class ThreadRepository {
     static async getThreadBySlug(slug: string) {
         try {
             const thread = await db.thread.findOne({
-                include: [{
-                    model: db.user,
-                    attributes: ['id', 'username']
-                }],
+                include: [
+                    {
+                        model: db.user,
+                        attributes: ['id', 'username']
+                    },
+                    {
+                        model: db.comment,
+                        attributes: ['id', 'comentar', 'created_at'],
+                        include: {
+                            model: db.user,
+                            attributes: ['id', 'username']
+                        }
+                    }
+                ],
                 attributes: ['id', 'title', 'body', 'slug', 'updated_at'],
                 where: { slug }
             });
@@ -45,7 +72,7 @@ class ThreadRepository {
     public static async getThreadById(id: number) {
         try {
             const thread = await db.thread.findOne({ where: { id: id} });
-            return thread;
+            return thread ? thread : false;
         } catch (err) {
             console.error(err);
         }

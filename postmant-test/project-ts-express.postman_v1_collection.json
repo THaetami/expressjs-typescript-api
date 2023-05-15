@@ -29,6 +29,21 @@
 				},
 				{
 					"name": "Register user Tami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('userId1', responseJson.addedUser.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -47,6 +62,21 @@
 				},
 				{
 					"name": "Register user Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('userId2', responseJson.addedUser.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -349,7 +379,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/users/1"
+						"url": "{{host}}:{{port}}/{{version1}}/users/{{userId1}}"
 					},
 					"response": []
 				},
@@ -379,7 +409,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/users/2"
+						"url": "{{host}}:{{port}}/{{version1}}/users/{{userId2}}"
 					},
 					"response": []
 				},
@@ -394,7 +424,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/users/1"
+						"url": "{{host}}:{{port}}/{{version1}}/users/{{userId1}}"
 					},
 					"response": []
 				},
@@ -569,7 +599,7 @@
 					"response": []
 				},
 				{
-					"name": "Get users No Auth",
+					"name": "Get All users No Auth",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -581,7 +611,7 @@
 					"response": []
 				},
 				{
-					"name": "Get users No Valid token",
+					"name": "Get All users No Valid token",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -596,7 +626,7 @@
 					"response": []
 				},
 				{
-					"name": "Get users No Admin",
+					"name": "Get All users No Admin",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -611,7 +641,7 @@
 					"response": []
 				},
 				{
-					"name": "Get users Valid Admin",
+					"name": "Get All users Valid Admin",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -636,7 +666,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/users/2"
+						"url": "{{host}}:{{port}}/{{version1}}/users/1"
 					},
 					"response": []
 				},
@@ -693,7 +723,7 @@
 						},
 						"method": "POST",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/users/batutuu/active"
+						"url": "{{host}}:{{port}}/{{version1}}/users/{{userEncih}}/active"
 					},
 					"response": []
 				},
@@ -708,7 +738,7 @@
 						},
 						"method": "POST",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/users/batutuu/active"
+						"url": "{{host}}:{{port}}/{{version1}}/users/{{userEncih}}/active"
 					},
 					"response": []
 				},
@@ -723,7 +753,7 @@
 						},
 						"method": "POST",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/users/xxx/active"
+						"url": "{{host}}:{{port}}/{{version1}}/users/xxxx/active"
 					},
 					"response": []
 				},
@@ -863,6 +893,7 @@
 									"    const responseJson = pm.response.json();\r",
 									"\r",
 									"    pm.environment.set('slug', responseJson.addedThread.slug);\r",
+									"    pm.environment.set('threadId1', responseJson.addedThread.id);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -901,7 +932,8 @@
 									"pm.test('should respose with correct property and message', () => {\r",
 									"    const responseJson = pm.response.json();\r",
 									"\r",
-									"    pm.environment.set('slug', responseJson.addedThread.slug);\r",
+									"    // pm.environment.set('slug', responseJson.addedThread.slug);\r",
+									"    pm.environment.set('threadId2', responseJson.addedThread.id);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -931,19 +963,49 @@
 					"response": []
 				},
 				{
-					"name": "Get Threads No Auth",
+					"name": "Get ThreadById No Auth",
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/threads"
+						"url": "{{host}}:{{port}}/{{version1}}/threads/1"
 					},
 					"response": []
 				},
 				{
-					"name": "Get Threads",
+					"name": "Get ThreadById Not Found",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/100"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThreadById No Owner",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThreadById valid",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -953,22 +1015,28 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/threads"
+						"url": "{{host}}:{{port}}/{{version1}}/threads/2"
 					},
 					"response": []
 				},
 				{
-					"name": "Get Thread By Slug",
+					"name": "Update Thread No Auth",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{accessTokenEncih}}"
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"update thread\",\r\n    \"body\": \"update thread\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
 							}
 						},
-						"method": "GET",
-						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/threads/{{slug}}"
+						"url": "{{host}}:{{port}}/{{version1}}/threads/{{threadId2}}"
 					},
 					"response": []
 				},
@@ -992,28 +1060,7 @@
 								}
 							}
 						},
-						"url": "{{host}}:{{port}}/{{version1}}/threads/2"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Thread No Auth",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"update thread\",\r\n    \"body\": \"update thread\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{host}}:{{port}}/{{version1}}/threads/2"
+						"url": "{{host}}:{{port}}/{{version1}}/threads/{{threadId2}}"
 					},
 					"response": []
 				},
@@ -1061,7 +1108,7 @@
 								}
 							}
 						},
-						"url": "{{host}}:{{port}}/{{version1}}/threads/1"
+						"url": "{{host}}:{{port}}/{{version1}}/threads/{{threadId1}}"
 					},
 					"response": []
 				},
@@ -1071,21 +1118,36 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "{{accessTokenTami}}"
+								"token": "{{accessTokenEncih}}"
 							}
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"update \",\r\n    \"body\": \"update \"\r\n}",
+							"raw": "{\r\n    \"title\": \"kocak diupdate \",\r\n    \"body\": \"kocak diupdate \"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{host}}:{{port}}/{{version1}}/threads/1"
+						"url": "{{host}}:{{port}}/{{version1}}/threads/{{threadId2}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThreadById valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/{{threadId2}}"
 					},
 					"response": []
 				},
@@ -1097,7 +1159,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/threads/5"
+						"url": "{{host}}:{{port}}/{{version1}}/threads/{{threadId1}}"
 					},
 					"response": []
 				},
@@ -1127,7 +1189,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "{{host}}:{{port}}/{{version1}}/threads/1"
+						"url": "{{host}}:{{port}}/{{version1}}/threads/{{threadId1}}"
 					},
 					"response": []
 				},
@@ -1143,6 +1205,514 @@
 						"method": "DELETE",
 						"header": [],
 						"url": "{{host}}:{{port}}/{{version1}}/threads/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Threads No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Threads",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThreadBySlug No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/detail/{{slug}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThreadBySlug Not Found",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/detail/dddd"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThreadBySlug",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/detail/{{slug}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "COMMENT",
+			"item": [
+				{
+					"name": "Login Admin Tami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userTami}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenEncih', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userEncih}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Thread User Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    // pm.environment.set('slug', responseJson.addedThread.slug);\r",
+									"    pm.environment.set('threadId3', responseJson.addedThread.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"thread 3\",\r\n    \"body\": \"thread 3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment No Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentar\": \"comentar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/comments/{{threadId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment Invalid Payload",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentar\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/comments/{{threadId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment Thread Not Found",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentar\": \"comentar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/comments/200"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment By Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('commentId1', responseJson.addedComment.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentar\": \"comentar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/comments/{{threadId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment By Tami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('commentId2', responseJson.addedComment.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"thread_id\": \"1\",\r\n    \"comentar\": \"comentar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/comments/{{threadId3}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Threads",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThreadBySlug",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/detail/{{slug}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment No Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/comments/{{threadId2}}/{{commentId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete when Thread Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/comments/xxx/{{commentId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete when Comment Not Found Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/comments/{{threadId3}}/xxx"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete when Not Owner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/comments/{{threadId3}}/{{commentId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/comments/{{threadId1}}/{{commentId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ThreadBySlug",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/threads/detail/{{slug}}"
 					},
 					"response": []
 				}

@@ -8,9 +8,10 @@ class ThreadRoutes extends BaseRoutes {
     public routes(): void {
         this.router.get('/', auth, ThreadController.index);
         this.router.post('/', auth, threadValidation, ThreadController.create);
-        this.router.get('/:slug', auth, ThreadController.show);
+        this.router.get('/:id', auth, ThreadController.show);
         this.router.put('/:id', auth, threadValidation, ThreadController.update);
         this.router.delete('/:id', auth,  ThreadController.delete);
+        this.router.get('/detail/:slug', auth, ThreadController.detail);
     }
 }
 

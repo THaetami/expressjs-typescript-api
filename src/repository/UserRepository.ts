@@ -1,20 +1,12 @@
 const db = require('../db/models');
 
 class UserRepository {
-    public static async verifyAdmin(is_admin: boolean) {
-        try {
-            const user = await db.user.findOne({ where: { is_admin: is_admin} });
-            return user? user: false
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
     static async getUsers() {
         try {
             const users = await db.user.findAll({
                 paranoid: false,
-                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at']
+                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at'],
+                where: { is_admin: false }
             });
             return users;
         } catch (err) {
@@ -24,7 +16,10 @@ class UserRepository {
 
     static async getUserById(id: number) {
         try {
-            const user = await db.user.findOne({ where: { id: id} });
+            const user = await db.user.findOne({ 
+                where: { id: id },
+                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at', 'is_admin'] 
+            });
             return user ? user : false;
         } catch (err) {
             console.error(err);
