@@ -8,6 +8,7 @@ import UserRoutes from './routers/UserRoutes';
 import AuthRoutes from './routers/AuthRoutes';
 import ThreadRoutes from './routers/ThreadRoutes';
 import CommentRoutes from './routers/CommentRoutes';
+import LikeRoutes from './routers/LikeRoutes';
 
 class App {
     public app: Application;
@@ -36,6 +37,7 @@ class App {
         this.app.use('/api/v1/auth', AuthRoutes);
         this.app.use('/api/v1/threads', ThreadRoutes);
         this.app.use('/api/v1/comments', CommentRoutes);
+        this.app.use('/api/v1/likes', LikeRoutes);
     }
 }
 

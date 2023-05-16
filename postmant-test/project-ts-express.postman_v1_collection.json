@@ -859,7 +859,7 @@
 					"response": []
 				},
 				{
-					"name": "Add Thread No Valid Payload",
+					"name": "Add Thread Invalid Payload",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1713,6 +1713,137 @@
 						"method": "GET",
 						"header": [],
 						"url": "{{host}}:{{port}}/{{version1}}/threads/detail/{{slug}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LIKE",
+			"item": [
+				{
+					"name": "Login user Encih",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenEncih', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userEncih}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Login admin Tami",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('should respose with correct property and message', () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.environment.set('accessTokenTami', responseJson.token);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{userTami}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}:{{port}}/{{version1}}/auth"
+					},
+					"response": []
+				},
+				{
+					"name": "Like No Auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/likes/{{threadId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Like Thread Not Found",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenEncih}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/likes/100"
+					},
+					"response": []
+				},
+				{
+					"name": "Like Thread Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/likes/{{threadId1}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Thread Valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessTokenTami}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "{{host}}:{{port}}/{{version1}}/likes/{{threadId1}}"
 					},
 					"response": []
 				}

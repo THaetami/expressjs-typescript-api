@@ -5,6 +5,7 @@ import AddedUser from "../entities/AddedUser";
 import ThreadRepository from "../repository/ThreadRepository";
 import GettedUser from "../entities/GetttedUser";
 import CommentRepository from "../repository/CommentRepository";
+import LikeRepository from "../repository/LikeRepository";
 
 
 class UserService {
@@ -81,6 +82,7 @@ class UserService {
         await UserRepository.deleteUser(user.id);
         await ThreadRepository.deleteThreadByUserId(user.id);
         await CommentRepository.deleteCommentByUserId(user.id);
+        await LikeRepository.deleteLikeByUserId(user.id);
         return { statusCode: 201, status: 'success', message: `user ${user.username}, berhasil dinonaktifkan`};
     }
 
@@ -99,7 +101,7 @@ class UserService {
         await UserRepository.reactivateUser(user.username);
         await ThreadRepository.reactivateThread(user.id, user.deletedAt);
         await CommentRepository.reactivateComment(user.id, user.deletedAt);
-        
+        await LikeRepository.reactivateLike(user.id, user.deleted_at);
         
         return { statusCode: 201, status: 'success', message: 'user berhasil diaktifkan'};
     }

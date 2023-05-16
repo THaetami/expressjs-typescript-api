@@ -61,7 +61,7 @@ class UserRepository {
         } catch (err) {
             console.error(err);
         }
-      }
+    }
 
     public static async updateUserById(id: Number, username: string, password?: string) {
         try {

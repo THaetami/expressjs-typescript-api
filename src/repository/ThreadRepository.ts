@@ -14,6 +14,10 @@ class ThreadRepository {
                     {
                         model: db.comment,
                         attributes: []
+                    },
+                    {
+                        model: db.like,
+                        attributes: []
                     }
                 ],
                 attributes: [
@@ -22,7 +26,8 @@ class ThreadRepository {
                     'body',
                     'slug',
                     'updated_at',
-                    [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'comment_count']
+                    [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'comment_count'],
+                    [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'like_count']
                 ],
                 subQuery: false,
                 group: ['thread.id', 'user.id']
@@ -58,10 +63,23 @@ class ThreadRepository {
                             model: db.user,
                             attributes: ['id', 'username']
                         }
+                    },
+                    {
+                        model: db.like,
+                        attributes: []
                     }
                 ],
-                attributes: ['id', 'title', 'body', 'slug', 'updated_at'],
-                where: { slug }
+                attributes: [
+                    'id', 
+                    'title', 
+                    'body', 
+                    'slug', 
+                    'updated_at',
+                    [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'like_count']
+                ],
+                subQuery: false,
+                where: { slug },
+                group: ['thread.id']
             });
             return thread ? thread : false;
         } catch (err) {

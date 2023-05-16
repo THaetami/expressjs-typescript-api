@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       user.hasMany(models.comment, {
         onDelete: 'CASCADE',
         foreignKey: 'user_id'
-      })
+      });
+      user.hasMany(models.like, {
+        onDelete: 'CASCADE',
+        foreignKey: 'user_id'
+      });
     }
   }
   user.init({
