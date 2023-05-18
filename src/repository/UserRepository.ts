@@ -1,4 +1,5 @@
 const db = require('../db/models');
+import { omit } from 'lodash';
 
 class UserRepository {
     static async getUsers() {
@@ -56,8 +57,11 @@ class UserRepository {
 
     public static async checkUsername(username: string) {
         try {
-            const user = await db.user.findOne({ where: { username }, paranoid: false });
-            return user;
+            const user = await db.user.findOne({ 
+                where: { username }, 
+                paranoid: false 
+            });
+            return omit(user.toJSON(), "password");
         } catch (err) {
             console.error(err);
         }

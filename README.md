@@ -4,7 +4,7 @@
 ## Project Setup
 
 ```sh
-copy __.env.example__ file to __.env__ and edit database credentials there
+copy .env.example file to .env and edit database credentials there
 ```
 
 ```sh
