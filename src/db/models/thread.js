@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       thread.hasMany(models.comment, {
         onDelete: 'CASCADE',
       });
-      user.hasMany(models.like, {
+      thread.hasMany(models.like, {
         onDelete: 'CASCADE',
       });
     }
