@@ -38,7 +38,7 @@ class ThreadRepository {
         }
     }
     
-    
+
     static async addThread(user_id: number, slug: string, title: string, body: string) {
         try {
             const result = await db.thread.create({ user_id, slug, title, body });

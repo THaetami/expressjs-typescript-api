@@ -1,5 +1,4 @@
 const db = require('../db/models');
-import { omit } from 'lodash';
 
 class UserRepository {
     static async getUsers() {
@@ -61,7 +60,7 @@ class UserRepository {
                 where: { username }, 
                 paranoid: false 
             });
-            return omit(user.toJSON(), "password");
+            return user;
         } catch (err) {
             console.error(err);
         }
