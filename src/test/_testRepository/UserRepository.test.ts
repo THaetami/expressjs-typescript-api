@@ -1,5 +1,5 @@
 const db = require('../../db/models')
-import UserRepository from "../UserRepository";
+import UserRepository from "../../repository/UserRepository";
 
 jest.mock('../../db/models', () => {
   const mockUser = {

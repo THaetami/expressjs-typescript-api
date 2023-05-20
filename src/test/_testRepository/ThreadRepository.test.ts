@@ -1,5 +1,5 @@
 import { Sequelize } from '../../db/models';
-import ThreadRepository from '../ThreadRepository';
+import ThreadRepository from '../../repository/ThreadRepository';
 const db = require('../../db/models');
 
 jest.mock('../../db/models');

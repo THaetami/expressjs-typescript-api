@@ -1,5 +1,5 @@
 const db = require('../../db/models');
-import LikeRepository from '../LikeRepository';
+import LikeRepository from '../../repository/LikeRepository';
 
 jest.mock('../../db/models');
 

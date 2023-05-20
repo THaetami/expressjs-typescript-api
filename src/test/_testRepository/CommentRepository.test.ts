@@ -1,5 +1,5 @@
 const db = require('../../db/models');
-import CommentRepository from "../CommentRepository";
+import CommentRepository from "../../repository/CommentRepository";
 
 jest.mock('../../db/models', () => {
   const mockComment = {
