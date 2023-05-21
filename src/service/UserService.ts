@@ -101,7 +101,7 @@ class UserService {
         await UserRepository.reactivateUser(user.username);
         await ThreadRepository.reactivateThread(user.id, user.deletedAt);
         await CommentRepository.reactivateComment(user.id, user.deletedAt);
-        await LikeRepository.reactivateLike(user.id, user.deleted_at);
+        await LikeRepository.reactivateLike(user.id, user.deletedAt);
         
         return { statusCode: 201, status: 'success', message: 'user berhasil diaktifkan'};
     }
