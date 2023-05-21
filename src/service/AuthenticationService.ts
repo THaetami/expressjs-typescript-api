@@ -1,7 +1,7 @@
 import { hash, compare }from 'bcrypt';
 import { sign, verify } from 'jsonwebtoken';
 
-interface User {
+export interface User {
     id: number;
     username: string;
 }

@@ -28,16 +28,16 @@ class  LikeService {
         const like = await LikeRepository.checkLikesThread(Number(id), thread.id);
         if (!like) {
             const result = await LikeRepository.likeAdd(Number(id), thread.id);
-            return { statusCode: 201, status: 'succes', message: 'like thread berhasil', likeCount: result };
+            return { statusCode: 201, status: 'success', message: 'like thread berhasil', likeCount: result };
         }
 
         if (like.deletedAt !== null) {
             const result = await LikeRepository.likeUpdate(like.id, thread.id);
-            return { statusCode: 201, status: 'succes', message: 'like thread berhasil', likeCount: result };
+            return { statusCode: 201, status: 'success', message: 'like thread berhasil', likeCount: result };
         }
 
         const result = await LikeRepository.unlikeDelete(like.id, thread.id);
-        return { statusCode: 201, status: 'succes', message: 'unlike thread berhasil', likeCount: result };
+        return { statusCode: 201, status: 'success', message: 'unlike thread berhasil', likeCount: result };
 
     }
 
