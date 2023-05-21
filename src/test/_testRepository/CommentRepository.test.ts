@@ -25,29 +25,44 @@ describe('CommentRepository', () => {
       const thread_id = 1;
       const comentar = 'This is a comment';
       const comment = { id: 1, user_id, thread_id, comentar };
-      db.comment.create.mockResolvedValueOnce(comment);
-
+      (db.comment.create as jest.Mock).mockResolvedValueOnce(comment);
+  
       const result = await CommentRepository.addComment(user_id, thread_id, comentar);
-
+  
       expect(db.comment.create).toHaveBeenCalledWith({ user_id, thread_id, comentar });
       expect(result).toEqual(comment);
     });
-
+  
     it('should handle errors', async () => {
       const user_id = 1;
       const thread_id = 1;
       const comentar = 'This is a comment';
       const error = new Error('Add comment error');
-      db.comment.create.mockRejectedValueOnce(error);
+      (db.comment.create as jest.Mock).mockRejectedValueOnce(error);
       console.error = jest.fn();
-
+  
       const result = await CommentRepository.addComment(user_id, thread_id, comentar);
-
+  
       expect(db.comment.create).toHaveBeenCalledWith({ user_id, thread_id, comentar });
       expect(console.error).toHaveBeenCalledWith(error);
       expect(result).toBeFalsy();
     });
+  
+    it('should return false when result is falsy', async () => {
+      const user_id = 1;
+      const thread_id = 1;
+      const comentar = 'This is a comment';
+      (db.comment.create as jest.Mock).mockResolvedValueOnce(null); // or any falsy value
+      console.error = jest.fn();
+  
+      const result = await CommentRepository.addComment(user_id, thread_id, comentar);
+  
+      expect(db.comment.create).toHaveBeenCalledWith({ user_id, thread_id, comentar });
+      expect(console.error).not.toHaveBeenCalled();
+      expect(result).toBeFalsy();
+    });
   });
+  
 
   describe('getCommentById', () => {
     it('should return a comment by ID if found', async () => {

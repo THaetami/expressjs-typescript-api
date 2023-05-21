@@ -107,9 +107,9 @@ describe('ThreadRepository', () => {
         title: 'New Thread',
         body: 'New Body',
       });
-
+  
       const result = await ThreadRepository.addThread(1, 'new-thread', 'New Thread', 'New Body');
-
+  
       expect(createMock).toHaveBeenCalledWith({
         user_id: 1,
         slug: 'new-thread',
@@ -118,20 +118,36 @@ describe('ThreadRepository', () => {
       });
       expect(result).toEqual({ id: 1, title: 'New Thread', body: 'New Body' });
     });
-
+  
     it('should handle errors', async () => {
       const errorMock = new Error('Database error');
       jest.spyOn(db.thread, 'create').mockRejectedValueOnce(errorMock);
-
+  
       const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-
+  
       const result = await ThreadRepository.addThread(1, 'new-thread', 'New Thread', 'New Body');
-
+  
       expect(consoleErrorSpy).toHaveBeenCalledWith(errorMock);
       expect(result).toBeUndefined();
     });
+  
+    it('should return false when result is falsy', async () => {
+      const createMock = jest.spyOn(db.thread, 'create').mockResolvedValueOnce(null); // or any falsy value
+      console.error = jest.fn();
+  
+      const result = await ThreadRepository.addThread(1, 'new-thread', 'New Thread', 'New Body');
+  
+      expect(createMock).toHaveBeenCalledWith({
+        user_id: 1,
+        slug: 'new-thread',
+        title: 'New Thread',
+        body: 'New Body',
+      });
+      expect(console.error).not.toHaveBeenCalled();
+      expect(result).toBeFalsy();
+    });
   });
-
+  
   describe('getThreadBySlug', () => {
     it('should return a thread by slug', async () => {
       const findOneMock = jest.spyOn(db.thread, 'findOne').mockResolvedValueOnce({
@@ -139,9 +155,9 @@ describe('ThreadRepository', () => {
         title: 'Thread 1',
         body: 'Body 1',
       });
-
+  
       const thread = await ThreadRepository.getThreadBySlug('thread-slug');
-
+  
       expect(findOneMock).toHaveBeenCalledWith({
         include: [
           {
@@ -175,19 +191,61 @@ describe('ThreadRepository', () => {
       });
       expect(thread).toEqual({ id: 1, title: 'Thread 1', body: 'Body 1' });
     });
-
+  
     it('should handle errors', async () => {
       const errorMock = new Error('Database error');
       jest.spyOn(db.thread, 'findOne').mockRejectedValueOnce(errorMock);
-
+  
       const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-
+  
       const thread = await ThreadRepository.getThreadBySlug('thread-slug');
-
+  
       expect(consoleErrorSpy).toHaveBeenCalledWith(errorMock);
       expect(thread).toBeUndefined();
     });
+  
+    it('should return false when thread is falsy', async () => {
+      const findOneMock = jest.spyOn(db.thread, 'findOne').mockResolvedValueOnce(null); // or any falsy value
+      console.error = jest.fn();
+  
+      const thread = await ThreadRepository.getThreadBySlug('thread-slug');
+  
+      expect(findOneMock).toHaveBeenCalledWith({
+        include: [
+          {
+            model: db.user,
+            attributes: ['id', 'username'],
+          },
+          {
+            model: db.comment,
+            attributes: ['id', 'comentar', 'created_at'],
+            include: {
+              model: db.user,
+              attributes: ['id', 'username'],
+            },
+          },
+          {
+            model: db.like,
+            attributes: [],
+          },
+        ],
+        attributes: [
+          'id',
+          'title',
+          'body',
+          'slug',
+          'updated_at',
+          [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'like_count'],
+        ],
+        subQuery: false,
+        where: { slug: 'thread-slug' },
+        group: ['thread.id'],
+      });
+      expect(console.error).not.toHaveBeenCalled();
+      expect(thread).toBeFalsy();
+    });
   });
+  
 
   describe('getThreadById', () => {
     it('should return the thread with the specified ID', async () => {

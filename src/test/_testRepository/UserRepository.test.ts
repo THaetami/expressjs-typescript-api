@@ -143,6 +143,19 @@ describe("UserRepository", () => {
       expect(console.error).toHaveBeenCalledWith(error);
       expect(result).toBeFalsy();
     });
+
+    it('should return false when user is falsy', async () => {
+      const username = 'john';
+      const password = 'password';
+      (db.user.create as jest.Mock).mockResolvedValueOnce(null); // or any falsy value
+      console.error = jest.fn();
+  
+      const result = await UserRepository.addUser(username, password);
+  
+      expect(db.user.create).toHaveBeenCalledWith({ username: username, password: password });
+      expect(console.error).not.toHaveBeenCalled();
+      expect(result).toBeFalsy();
+    });
   });
 
   describe('getUserByUsername', () => {
