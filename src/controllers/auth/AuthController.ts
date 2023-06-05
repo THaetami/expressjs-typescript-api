@@ -15,7 +15,13 @@ class AuthController implements IController {
 
         if (compare) {
             const token = AuthenticationService.generateToken({ id: user.id, username: user.username });
-            return res.json({ 'token': token });
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'lax',
+            });
+            // return res.json({ 'token': token });
+            return res.json({ 'message': 'login sukses' });
         }
 
         return res.status(401).send('unauthorized');
@@ -23,7 +29,7 @@ class AuthController implements IController {
 
     logout = async (req: Request, res: Response): Promise<Response> => {
         res.setHeader("Authorization", "");
-
+        res.clearCookie('token')
         return res.json({ message: "Logout berhasil" });
     }
 }

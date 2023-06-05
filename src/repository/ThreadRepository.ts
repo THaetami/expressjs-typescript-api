@@ -2,7 +2,6 @@ import { Sequelize } from "../db/models";
 const db = require('../db/models');
 
 class ThreadRepository {
-
     static async getThreads() {
         try {
             const threads = await db.thread.findAll({

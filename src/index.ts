@@ -10,6 +10,7 @@ import ThreadRoutes from './routers/ThreadRoutes';
 import CommentRoutes from './routers/CommentRoutes';
 import LikeRoutes from './routers/LikeRoutes';
 
+
 class App {
     public app: Application;
 
@@ -25,7 +26,13 @@ class App {
     protected plugins() {
         this.app.use(compression());
         this.app.use(helmet());
-        this.app.use(cors());
+        // this.app.use(cors());
+        this.app.use(
+            cors({
+              origin: 'http://localhost:3000', // Ganti dengan asal/frontend yang sesuai
+              credentials: true, // Mengizinkan penggunaan kredensial
+            })
+          );
     }
 
     protected routes(): void {
