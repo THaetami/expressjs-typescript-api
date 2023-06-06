@@ -20,8 +20,9 @@ class AuthController implements IController {
                 secure: false,
                 sameSite: 'lax',
             });
-            // return res.json({ 'token': token });
-            return res.json({ 'message': 'login sukses' });
+            return res.json({ 
+                'message': 'login sukses',
+            });
         }
 
         return res.status(401).send('unauthorized');

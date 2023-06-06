@@ -1,5 +1,7 @@
 # Project Typescript | Expressjs | Sequelize
 
+## Frontend => https://github.com/THaetami/frontend-nextjs-project
+
 
 ## Project Setup
 

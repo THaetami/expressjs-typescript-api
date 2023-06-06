@@ -4,13 +4,25 @@ import UserRepository from "../repository/UserRepository";
 
 export const auth = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-        return res.status(401).json({
-            "message": "Unauthenticated"
-        });
+    const cookie = req.headers.cookie;
+
+    const cookieParts = cookie?.split(";") ?? [];
+
+    let token = "";
+    for (let i = 0; i < cookieParts.length; i++) {
+      const cookiePart = cookieParts[i].trim();
+      if (cookiePart.startsWith("token=")) {
+        token = cookiePart.substring("token=".length);
+        break;
+      }
     }
-    
+
+    if (!token) {
+      return res.status(401).json({
+        "message": "Unauthenticated"
+      });
+    }
+
     const credential = AuthenticationService.decodeToken(token);
     const account = await UserRepository.getUserById(credential.user.id);
 
@@ -23,9 +35,9 @@ export const auth = async (req: Request, res: Response, next: NextFunction): Pro
     } else {
       req.app.locals.credential = credential;
     }
-      
+
     next();
-    
+
   } catch (error) {
     return res.status(401).send(error);
   }
