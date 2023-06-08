@@ -5,22 +5,37 @@ import ThreadRepository from "../repository/ThreadRepository";
 import GettedThread from "../entities/GettedThread";
 
 class ThreadService {
-    credential: {
-        id: Number,
-    };
+    // credential: {
+    //     id: Number,
+    // };
+    // body: Request['body'];
+    // params: Request['params'];
+
+    // constructor(req: Request, res: Response) {
+    //     this.credential = req.app.locals.credential.user;
+    //     this.body = req.body;
+    //     this.params = req.params;
+    // }
+    credential: any;
     body: Request['body'];
     params: Request['params'];
 
     constructor(req: Request, res: Response) {
-        this.credential = req.app.locals.credential.user;
+        if (req.app.locals.credential) {
+            this.credential = req.app.locals.credential.user;
+        } else {
+            this.credential = null;
+        }
         this.body = req.body;
         this.params = req.params;
     }
 
-    async getThreads(): Promise<any> {
-        const threads = await ThreadRepository.getThreads()
+    async getThreads(page: number, limit: number): Promise<any> {
+        console.log(page);
+        console.log(limit);
+        const threads = await ThreadRepository.getThreads(page, limit);
         return threads;
-    }
+      }
     
     async addThread(): Promise<any> {
         const { title, body } = this.body;

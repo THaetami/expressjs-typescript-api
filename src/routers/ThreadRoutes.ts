@@ -6,7 +6,7 @@ import threadValidation from "../middlewares/validation/thread/ThreadValidation"
 
 class ThreadRoutes extends BaseRoutes {
     public routes(): void {
-        this.router.get('/', auth, ThreadController.index);
+        this.router.get('/', ThreadController.index);
         this.router.post('/', auth, threadValidation, ThreadController.create);
         this.router.get('/:id', auth, ThreadController.show);
         this.router.put('/:id', auth, threadValidation, ThreadController.update);

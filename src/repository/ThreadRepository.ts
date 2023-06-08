@@ -2,38 +2,49 @@ import { Sequelize } from "../db/models";
 const db = require('../db/models');
 
 class ThreadRepository {
-    static async getThreads() {
+    static async getThreads(page: number, limit: number) {
         try {
-            const threads = await db.thread.findAll({
-                include: [
-                    {
-                        model: db.user,
-                        attributes: ['id', 'username']
-                    },
-                    {
-                        model: db.comment,
-                        attributes: []
-                    },
-                    {
-                        model: db.like,
-                        attributes: []
-                    }
-                ],
-                attributes: [
-                    'id',
-                    'title',
-                    'body',
-                    'slug',
-                    'updated_at',
-                    [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'comment_count'],
-                    [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'like_count']
-                ],
-                subQuery: false,
-                group: ['thread.id', 'user.id']
-            });
-            return threads;
+          const totalCount = await db.thread.count();
+    
+          const threads = await db.thread.findAll({
+            include: [
+              {
+                model: db.user,
+                attributes: ['id', 'username']
+              },
+              {
+                model: db.comment,
+                attributes: []
+              },
+              {
+                model: db.like,
+                attributes: []
+              }
+            ],
+            attributes: [
+              'id',
+              'title',
+              'body',
+              'slug',
+              'updated_at',
+              [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'comment_count'],
+              [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'like_count']
+            ],
+            subQuery: false,
+            group: ['thread.id', 'user.id'],
+            offset: (page - 1) * limit,
+            limit: limit
+          });
+    
+          return {
+            threads,
+            currentPage: page,
+            totalPages: Math.ceil(totalCount / limit),
+            totalCount
+          };
         } catch (err) {
-            console.error(err);
+          console.error(err);
+          return null;
         }
     }
     

@@ -5,7 +5,9 @@ import ThreadService from "../../service/ThreadService";
 class ThreadController implements IController {
     index = async (req: Request, res: Response): Promise<Response> => {
         const service: ThreadService = new ThreadService(req, res);
-        const threads = await service.getThreads();
+        const page: number = parseInt(req.query.page?.toString() || '1'); // Current page number
+        const limit: number = parseInt(req.query.limit?.toString() || '10');
+        const threads = await service.getThreads(page, limit);
         return res.status(200).json({ "status": "success", "threads": threads });
     }
 
