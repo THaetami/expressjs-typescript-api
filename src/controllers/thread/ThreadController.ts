@@ -19,7 +19,7 @@ class ThreadController implements IController {
 
     show = async (req: Request, res: Response): Promise<Response> => {
         const service: ThreadService = new ThreadService(req, res);
-        const thread = await service.getThreadById();
+        const thread = await service.getThreadByOwner();
         return res.status(thread.statusCode).json(thread);
     }
 

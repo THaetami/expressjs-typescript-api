@@ -15,6 +15,12 @@ class CommentController implements IController {
         return res.status(comment.statusCode).json(comment);
     }
 
+    show = async (req: Request, res: Response): Promise<Response> => {
+        const service: CommentService = new CommentService(req, res);
+        const comments = await service.getCommentByThreadId();
+        return res.status(comments.statusCode).json(comments);
+    }
+
 }
 
 export default new CommentController();

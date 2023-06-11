@@ -8,6 +8,7 @@ class ThreadRoutes extends BaseRoutes {
     public routes(): void {
         this.router.post('/:threadId', auth, commentValidation, CommentController.create);
         this.router.delete('/:threadId/:commentId', auth, CommentController.delete);
+        this.router.get('/:threadId', CommentController.show)
     }
 }
 

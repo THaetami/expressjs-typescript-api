@@ -4,18 +4,21 @@ import ThreadRepository from "../repository/ThreadRepository";
 import AddedComment from "../entities/AddedComment";
 
 class CommentService {
-    credential: {
-        id: Number,
-    };
+    credential: any;
     body: Request['body'];
     params: Request['params'];
 
     constructor(req: Request, res: Response) {
-        this.credential = req.app.locals.credential.user;
+        if (req.app.locals.credential) {
+            this.credential = req.app.locals.credential.user;
+        } else {
+            this.credential = null;
+        }
         this.body = req.body;
         this.params = req.params;
     }
-    
+
+
     async addComment(): Promise<any> {
         const { threadId } = this.params;
         const { comentar } = this.body;
@@ -27,12 +30,15 @@ class CommentService {
             return { statusCode: 404, status: 'fail', message: 'thread tidak ditemukan' };
         }
 
-        const result = await CommentRepository.addComment(Number(id), thread.id, comentar);
+        const comment = await CommentRepository.addComment(Number(id), thread.id, comentar);
 
-        if (!result) {
+        if (!comment) {
             return { statusCode: 400, status: 'fail', message: 'thread gagal ditambahkan' };
         }
-        return { statusCode: 201, status: 'success', addedComment: new AddedComment(result)};
+
+        const comments = await CommentRepository.getCommentByThreadId(thread.id);
+
+        return { statusCode: 201, status: 'success', comments: comments };
     }
 
     async deleteComment(): Promise<any> {
@@ -57,7 +63,23 @@ class CommentService {
 
         await CommentRepository.deleteComment(comment.id);
 
-        return { statusCode: 201, status: 'success', message: 'comment berhasil hapus'};
+        const comments = await CommentRepository.getCommentByThreadId(thread.id);
+
+        return { statusCode: 201, status: 'success', message: 'comment berhasil hapus', comments: comments};
+    }
+
+    async getCommentByThreadId(): Promise<any> {
+        const { threadId } = this.params;
+
+        const thread = await ThreadRepository.getThreadById(Number(threadId));
+
+        if (!thread) {
+            return { statusCode: 404, status: 'fail', 'message': 'thread tidak ditemukan' };
+        }
+
+        const comments = await CommentRepository.getCommentByThreadId(thread.id);
+        
+        return { statusCode: 200, status: 'success', comments: comments};
     }
 }
 

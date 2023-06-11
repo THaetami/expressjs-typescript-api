@@ -5,17 +5,6 @@ import ThreadRepository from "../repository/ThreadRepository";
 import GettedThread from "../entities/GettedThread";
 
 class ThreadService {
-    // credential: {
-    //     id: Number,
-    // };
-    // body: Request['body'];
-    // params: Request['params'];
-
-    // constructor(req: Request, res: Response) {
-    //     this.credential = req.app.locals.credential.user;
-    //     this.body = req.body;
-    //     this.params = req.params;
-    // }
     credential: any;
     body: Request['body'];
     params: Request['params'];
@@ -31,8 +20,6 @@ class ThreadService {
     }
 
     async getThreads(page: number, limit: number): Promise<any> {
-        console.log(page);
-        console.log(limit);
         const threads = await ThreadRepository.getThreads(page, limit);
         return threads;
       }
@@ -48,10 +35,10 @@ class ThreadService {
         return { statusCode: 201, status: 'success', addedThread: new AddedThread(result)};
     }
 
-    async getThreadById(): Promise<any> {
-        const { id: threadId } = this.params;
+    async getThreadByOwner(): Promise<any> {
+        const { slug: slug } = this.params;
         const id = this.credential.id;
-        const thread = await ThreadRepository.getThreadById(Number(threadId));
+        const thread = await ThreadRepository.getThreadBySlug(slug);
 
         if (!thread) {
             return { statusCode: 404, status: 'fail', message: 'thread tidak ditemukan' };
@@ -106,7 +93,9 @@ class ThreadService {
         if (!thread) {
             return { statusCode: 404, status: 'fail', message: 'thread tidak ditemukan' };
         }
-        return { statusCode: 200, status: 'success', thread: thread};
+
+        const detailThread = await ThreadRepository.getDetailThread(thread.id);
+        return { statusCode: 200, status: 'success', 'thread': detailThread};
     }
 }
 

@@ -10,6 +10,26 @@ class CommentRepository {
         }
     }
 
+    public static async getCommentByThreadId(threadId: number) {
+        try {
+            const comments = await db.comment.findAll({
+                where: { thread_id: threadId },
+                include: [
+                    {
+                        model: db.user,
+                        attributes: ['id', 'username']
+                    }
+                ],
+                attributes: ['id', 'thread_id', 'comentar', 'created_at'],
+                order: [['created_at', 'DESC']],
+            });
+            return comments;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    
+
     public static async getCommentById(id: number) {
         try {
             const comment = await db.comment.findOne({ where: { id: id} });
