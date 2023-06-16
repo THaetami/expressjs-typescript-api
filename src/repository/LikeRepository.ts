@@ -66,6 +66,24 @@ class LikeRepository {
         }
     }
 
+    public static async getThreadIdsByUserId(userId: number) {
+        try {
+          const likes = await db.like.findAll({
+            where: { user_id: userId },
+            attributes: ['thread_id'],
+            raw: true,
+          });
+      
+          const threadIds = likes.map((like: { thread_id: any; }) => like.thread_id);
+      
+          return threadIds.length > 0 ? threadIds : false;
+        } catch (err) {
+          console.log(err);
+          throw err;
+        }
+      }
+      
+
 }
 
 export default LikeRepository;

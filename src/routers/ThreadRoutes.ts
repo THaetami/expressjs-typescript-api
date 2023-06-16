@@ -11,6 +11,8 @@ class ThreadRoutes extends BaseRoutes {
         this.router.get('/:slug', auth, ThreadController.show);
         this.router.put('/:id', auth, threadValidation, ThreadController.update);
         this.router.delete('/:id', auth,  ThreadController.delete);
+        this.router.get('/by/:username', auth, ThreadController.showByUser);
+        this.router.get('/by/:username/likes', auth, ThreadController.showByLikeUser);
         this.router.get('/detail/:slug', ThreadController.detail);
     }
 }

@@ -23,6 +23,22 @@ class ThreadController implements IController {
         return res.status(thread.statusCode).json(thread);
     }
 
+    showByUser = async (req: Request, res: Response): Promise<Response> => {
+        const service: ThreadService = new ThreadService(req, res);
+        const page: number = parseInt(req.query.page?.toString() || '1'); // Current page number
+        const limit: number = parseInt(req.query.limit?.toString() || '10');
+        const thread = await service.getThreadByUsername(page, limit);
+        return res.status(thread.statusCode).json(thread);
+    }
+
+    showByLikeUser = async (req: Request, res: Response): Promise<Response> => {
+        const service: ThreadService = new ThreadService(req, res);
+        const page: number = parseInt(req.query.page?.toString() || '1'); // Current page number
+        const limit: number = parseInt(req.query.limit?.toString() || '10');
+        const thread = await service.getThreadByLikeUser(page, limit);
+        return res.status(thread.statusCode).json(thread);
+    }
+
     update = async (req: Request, res: Response): Promise<Response> => {
         const service: ThreadService = new ThreadService(req, res);
         const thread = await service.updateThreadById();

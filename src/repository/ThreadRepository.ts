@@ -1,5 +1,6 @@
 import { Sequelize } from "../db/models";
 const db = require('../db/models');
+const { Op } = require('sequelize');
 
 class ThreadRepository {
     static async getThreads(page = 1, limit = 10) {
@@ -27,6 +28,7 @@ class ThreadRepository {
                     'body',
                     'slug',
                     'updated_at',
+                    'created_at',
                     [
                         Sequelize.fn('COUNT', Sequelize.literal('DISTINCT comments.id')),
                         'comment_count'
@@ -53,7 +55,123 @@ class ThreadRepository {
             console.error(err);
             return null;
         }
-      }
+    }
+
+    static async getThreadByUserId(page = 1, limit = 10, userId: number) {
+        try {
+          const totalCount = await db.thread.count({
+            where: { user_id: userId },
+          });
+      
+          const threads = await db.thread.findAll({
+            where: { user_id: userId },
+            include: [
+              {
+                model: db.user,
+                attributes: ['id', 'username'],
+              },
+              {
+                model: db.comment,
+                attributes: [],
+              },
+              {
+                model: db.like,
+                attributes: [],
+              },
+            ],
+            attributes: [
+              'id',
+              'title',
+              'body',
+              'slug',
+              'updated_at',
+              'created_at',
+              [
+                Sequelize.fn('COUNT', Sequelize.literal('DISTINCT comments.id')),
+                'comment_count',
+              ],
+              [
+                Sequelize.fn('COUNT', Sequelize.literal('DISTINCT likes.id')),
+                'like_count',
+              ],
+            ],
+            subQuery: false,
+            group: ['thread.id', 'user.id'],
+            order: [['created_at', 'DESC']],
+            offset: (page - 1) * limit,
+            limit: limit,
+          });
+      
+          return {
+            threads,
+            currentPage: page,
+            totalPages: Math.ceil(totalCount / limit),
+            totalCount,
+          };
+        } catch (err) {
+          console.error(err);
+          return null;
+        }
+    }
+
+    
+static async getThreadByUserIdAndThreadId(page = 1, limit = 10, threadIds: any) {
+    try {
+      const totalCount = await db.thread.count({
+        where: { id: { [Op.in]: threadIds } },
+      });
+  
+      const threads = await db.thread.findAll({
+        where: { id: { [Op.in]: threadIds } },
+        include: [
+          {
+            model: db.user,
+            attributes: ['id', 'username'],
+          },
+          {
+            model: db.comment,
+            attributes: [],
+          },
+          {
+            model: db.like,
+            attributes: [],
+          },
+        ],
+        attributes: [
+          'id',
+          'title',
+          'body',
+          'slug',
+          'updated_at',
+          'created_at',
+          [
+            Sequelize.fn('COUNT', Sequelize.literal('DISTINCT comments.id')),
+            'comment_count',
+          ],
+          [
+            Sequelize.fn('COUNT', Sequelize.literal('DISTINCT likes.id')),
+            'like_count',
+          ],
+        ],
+        subQuery: false,
+        group: ['thread.id', 'user.id'],
+        order: [['created_at', 'DESC']],
+        offset: (page - 1) * limit,
+        limit: limit,
+      });
+  
+      return {
+        threads,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+        totalCount,
+      };
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
+      
 
     static async addThread(user_id: number, slug: string, title: string, body: string) {
         try {

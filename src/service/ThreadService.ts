@@ -3,6 +3,8 @@ import AddedThread from "../entities/AddedThread";
 import { Request, Response } from "express";
 import ThreadRepository from "../repository/ThreadRepository";
 import GettedThread from "../entities/GettedThread";
+import UserRepository from "../repository/UserRepository";
+import LikeRepository from "../repository/LikeRepository";
 
 class ThreadService {
     credential: any;
@@ -49,6 +51,48 @@ class ThreadService {
         }
 
         return { statusCode: 200, status: 'success', thread: new GettedThread(thread)};
+    }
+
+    async getThreadByUsername(page: number, limit: number): Promise<any> {
+        const { username } = this.params;
+        const id = this.credential.id;
+
+        const user = await UserRepository.getUserByUsername(username);
+
+         if (!user) {
+            return { statusCode: 404, status: 'fail', message: 'user tidak ditemukan' };
+        }
+
+        if (user.id !== id) {
+            return { statusCode: 403, status: 'fail', message: 'anda tidak berhak mengakses resource ini' };
+        }
+
+        const thread = await ThreadRepository.getThreadByUserId(page, limit, user.id);
+
+        return { statusCode: 200, status: 'success', threads: thread};
+    }
+
+    async getThreadByLikeUser(page: number, limit: number): Promise<any> {
+        const { username } = this.params;
+        const id = this.credential.id;
+
+        const user = await UserRepository.getUserByUsername(username);
+
+         if (!user) {
+            return { statusCode: 404, status: 'fail', message: 'user tidak ditemukan' };
+        }
+
+        if (user.id !== id) {
+            return { statusCode: 403, status: 'fail', message: 'anda tidak berhak mengakses resource ini' };
+        }
+        
+        const likes = await LikeRepository.getThreadIdsByUserId(user.id);
+
+        // console.log(likes);
+        const thread = await ThreadRepository.getThreadByUserIdAndThreadId(page, limit, likes);
+        // console.log(thread);
+
+        return { statusCode: 200, status: 'success', threads: thread};
     }
 
     async updateThreadById(): Promise<any> {
