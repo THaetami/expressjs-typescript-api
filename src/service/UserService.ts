@@ -24,8 +24,8 @@ class UserService {
         this.params = req.params;
     }
 
-    async getUsers(): Promise<any> {
-        const users = await UserRepository.getUsers()
+    async getUsers(page: number, limit: number): Promise<any> {
+        const users = await UserRepository.getUsers(page, limit)
         return users;
     }
 

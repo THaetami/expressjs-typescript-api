@@ -1,6 +1,6 @@
 # Project Typescript | Expressjs | Sequelize
 
-## Frontend => https://github.com/THaetami/frontend-nextjs-project
+## Frontend for API on branch exploration1 => https://github.com/THaetami/frontend-nextjs-project
 
 
 ## Project Setup

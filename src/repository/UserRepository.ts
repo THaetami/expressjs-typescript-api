@@ -1,18 +1,38 @@
 const db = require('../db/models');
 
 class UserRepository {
-    static async getUsers() {
+    static async getUsers(page = 1, limit = 10) {
         try {
-            const users = await db.user.findAll({
-                paranoid: false,
-                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at'],
-                where: { is_admin: false }
+            const totalCount = await db.user.count({
+                where: { is_admin: false },
+                paranoid: false
             });
-            return users;
+        
+            const totalPages = Math.ceil(totalCount / limit);
+        
+            const currentPage = Math.max(1, Math.min(page, totalPages));
+        
+            const users = await db.user.findAll({
+                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at'],
+                where: { is_admin: false },
+                offset: (currentPage - 1) * limit,
+                limit: limit,
+                paranoid: false
+            });
+        
+            return {
+                users,
+                currentPage,
+                totalPages,
+                totalCount,
+            };
         } catch (err) {
             console.error(err);
+            throw err; 
         }
     }
+      
+      
 
     static async getUserById(id: number) {
         try {

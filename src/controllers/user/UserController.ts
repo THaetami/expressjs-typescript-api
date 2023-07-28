@@ -6,7 +6,9 @@ import UserService from "../../service/UserService";
 class UserController implements IController {
     index = async (req: Request, res: Response): Promise<Response> => {
         const service: UserService = new UserService(req, res);
-        const users = await service.getUsers();
+        const page: number = parseInt(req.query.page?.toString() || '1'); // Current page number
+        const limit: number = parseInt(req.query.limit?.toString() || '10');
+        const users = await service.getUsers(page, limit);
         return res.status(200).json({ "status": "success", "users": users});
     }
 

@@ -7,16 +7,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction): Pro
     console.log(req.headers.cookie);
     const cookie = req.headers.cookie;
 
-    // const cookieParts = cookie?.split(";") ?? [];
-
-    // let token = "";
-    // for (let i = 0; i < cookieParts.length; i++) {
-    //   const cookiePart = cookieParts[i].trim();
-    //   if (cookiePart.startsWith("token=")) {
-    //     token = cookiePart.substring("token=".length);
-    //     break;
-    //   }
-    // }
     if (!cookie) {
       return res.status(401).json({
         "message": "Unauthenticated"
