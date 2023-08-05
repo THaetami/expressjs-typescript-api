@@ -88,9 +88,7 @@ class ThreadService {
         
         const likes = await LikeRepository.getThreadIdsByUserId(user.id);
 
-        // console.log(likes);
         const thread = await ThreadRepository.getThreadByUserIdAndThreadId(page, limit, likes);
-        // console.log(thread);
 
         return { statusCode: 200, status: 'success', threads: thread};
     }

@@ -70,21 +70,32 @@ class UserService {
     async deleteUserById(): Promise<any> {
         const { id } = this.params;
         const user = await UserRepository.getUserById(Number(id));
-        
+    
         if (!user) {
             return { statusCode: 404, status: 'fail', message: 'user tidak ditemukan' };
         }
-
+    
         if (user.is_admin) {
-            return { statusCode: 404, status: 'fail', message: 'user tidak ditemukan' };
+            return { statusCode: 403, status: 'fail', message: 'Tidak diizinkan untuk menghapus admin' };
         }
     
-        await UserRepository.deleteUser(user.id);
-        await ThreadRepository.deleteThreadByUserId(user.id);
-        await CommentRepository.deleteCommentByUserId(user.id);
-        await LikeRepository.deleteLikeByUserId(user.id);
+        const expiresDate = new Date();
+    
+        if (new Date(user.expried_token) > expiresDate) {
+            return { statusCode: 403, status: 'fail', message: 'user sedang online' };
+        }
+    
+        await UserRepository.updateExpriedToken(expiresDate, user.id);
+        await Promise.all([
+            UserRepository.deleteUser(user.id),
+            ThreadRepository.deleteThreadByUserId(user.id),
+            CommentRepository.deleteCommentByUserId(user.id),
+            LikeRepository.deleteLikeByUserId(user.id)
+        ]);
+    
         return { statusCode: 201, status: 'success', message: `user ${user.username}, berhasil dinonaktifkan`};
     }
+    
 
     async activatedUser(): Promise<any> {
         const { username } = this.params;

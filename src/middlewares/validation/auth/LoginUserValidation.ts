@@ -11,7 +11,7 @@ const loginUserValidation = [
         .custom(async (value, { req }) => {
             const user = await UserRepository.getUserByUsername(value);
             if (!user) {
-                throw new Error('username tidak terdaftar.');
+                throw new Error('akun tidak terdaftar.');
             }
             return true;
         }),

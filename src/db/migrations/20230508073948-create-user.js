@@ -33,6 +33,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.DATE
       },
+      expried_token: {
+        allowNull: true,
+        type: Sequelize.DATE
+      }
     });
   },
   async down(queryInterface, Sequelize) {

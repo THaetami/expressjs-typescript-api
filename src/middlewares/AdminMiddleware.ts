@@ -4,7 +4,6 @@ import UserRepository from "../repository/UserRepository";
 
 export const admin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
-    console.log(req.headers.cookie);
     const cookie = req.headers.cookie;
 
     if (!cookie) {

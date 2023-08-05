@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     },
+    expried_token: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'user',

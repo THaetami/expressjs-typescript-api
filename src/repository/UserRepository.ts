@@ -13,7 +13,7 @@ class UserRepository {
             const currentPage = Math.max(1, Math.min(page, totalPages));
         
             const users = await db.user.findAll({
-                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at'],
+                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at', 'expried_token'],
                 where: { is_admin: false },
                 offset: (currentPage - 1) * limit,
                 limit: limit,
@@ -38,7 +38,7 @@ class UserRepository {
         try {
             const user = await db.user.findOne({ 
                 where: { id: id },
-                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at', 'is_admin'] 
+                attributes: ['id', 'username', 'created_at', 'updated_at', 'deleted_at', 'is_admin', 'expried_token'] 
             });
             return user ? user : false;
         } catch (err) {
@@ -104,6 +104,15 @@ class UserRepository {
         } catch (err) {
             console.error(err);
             throw err;
+        }
+    }
+
+    public static async updateExpriedToken(expried_token: Date, id: Number) {
+        try {
+            console.log(`expried ${expried_token}`);
+            await db.user.update({ expried_token: expried_token}, { where: { id: id } });
+        } catch(err) {
+            console.log(err);
         }
     }
       
