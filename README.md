@@ -40,4 +40,4 @@ npm run ts
 npm run tsc
 ```
 
-Open [http://localhost:3000/api-docs](http://localhost:3000/api-docs) with your browser to see the documentation API.
+Open [http://localhost:8000/api-docs](http://localhost:8000/api-docs) with your browser to see the documentation API.

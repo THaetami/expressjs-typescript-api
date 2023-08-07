@@ -13,10 +13,6 @@
         {
             "url": "http://localhost:8000/",
             "description": "Local Dev"
-        },
-        {
-            "url": "/api/",
-            "description": "With docker-compose and nginx proxy"
         }
     ],
     "tags": [
