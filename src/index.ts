@@ -4,6 +4,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { config as dotenv } from 'dotenv';
 import cookieParser from 'cookie-parser';
+import swaggerJsdoc from 'swagger-jsdoc';  
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './swagger.json';
 
 import UserRoutes from './routers/UserRoutes';
 import AuthRoutes from './routers/AuthRoutes';
@@ -50,8 +53,13 @@ class App {
     }
 }
 
+
 const port: number = 8000;
 const app = new App().app;
+
+  // Menambahkan dokumentasi Swagger ke Express
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.listen(port, () => {
     console.log(`aplikasi ini menggunakan port ${port}`);
 })
