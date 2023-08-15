@@ -29,26 +29,6 @@
     ],
     "paths": {
         "/api/v1/users": {
-            "get": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Retrieve all users in the system, but only for administrators who are logged in. To become an admin, please update the data in the 'is_admin' column in the 'users' table to 1", 
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Users"
-                        }
-                    },
-                    "401": {
-                        "description": "Failed. No Authenticated."
-                    },
-                    "403": {
-                        "description": "Failed. Error: Forbidden."
-                    }
-                }
-            },
             "post": {
                 "tags": [
                     "Users"
@@ -69,7 +49,7 @@
                     "application/json"
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/id"
@@ -82,57 +62,9 @@
                         "description": "Unprocessable Entity"
                     }
                 }
-            },
-            "put": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Update user in the system.",
-                "requestBody": {
-                    "description": "User Object",
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/definitions/User"
-                            }
-                        }
-                    }
-                },
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/id"
-                        }
-                    },
-                    "404": {
-                        "description": "Failed. User not found."
-                    },
-                    "401": {
-                        "description": "Failed. No Authenticated."
-                    }
-                }
             }
         },
         "/api/v1/auth": {
-            "get": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Retrieve data of the currently logged-in user.",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Users"
-                        }
-                    }
-                }
-            },
             "post": {
                 "tags": [
                     "Auth"
@@ -161,14 +93,75 @@
                     },
                     "400": {
                         "description": "Failed. Bad post data."
+                    },
+                    "422": {
+                        "description": "Failed. Unprocessable Entity."
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Retrieve data of the currently logged-in user.",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Failed. Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the user that we want to match",
+                    "type": "number"
+                }
+            ],
+            "delete": {
+                "summary": "User logout in system",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Logout user with id",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed. Unauthenticated"
                     }
                 }
             }
         }
-
     },
     "definitions": {
-  
+        "id": {
+            "properties": {
+                "id": {
+                    "type": "number"
+                }
+            }
+        },
         "User": {
             "type": "object",
             "properties": {
@@ -180,6 +173,5 @@
                 }
             }
         }
-
     }
 }

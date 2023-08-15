@@ -8,7 +8,7 @@ class AuthRoutes extends BaseRoutes {
     public routes(): void {
         this.router.get('/', auth, AuthController.index);
         this.router.post('/', loginUserValidation, AuthController.login);
-        this.router.delete('/:id', AuthController.logout);
+        this.router.delete('/:id', auth, AuthController.logout);
     }
 }
 
