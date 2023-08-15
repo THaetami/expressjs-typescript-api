@@ -37,6 +37,13 @@ class AuthController implements IController {
 
     logout = async (req: Request, res: Response): Promise<Response> => {
         const { id } = req.params;
+        const credential = req.app.locals.credential.user.id;
+
+        if (id != credential) {
+            return res.status(401).json({ 
+                'message': 'unauthorized',
+            });
+        }
         const expiresDate = new Date();
 
         await UserRepository.updateExpriedToken(expiresDate, Number(id));
