@@ -23,8 +23,8 @@ class AuthController implements IController {
 
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: false,
-                sameSite: 'lax',
+                secure: true,
+                sameSite: 'none',
                 expires: expiresDate,
             });
             return res.json({ 
