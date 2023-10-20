@@ -48,7 +48,13 @@ class AuthController implements IController {
 
         await UserRepository.updateExpriedToken(expiresDate, Number(id));
         res.setHeader("Authorization", "");
-        res.clearCookie('token');
+        // res.clearCookie('token');
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+
         return res.json({ message: "Logout berhasil" });
     }
 }
